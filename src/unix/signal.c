@@ -70,7 +70,7 @@ static void uv__signal_global_init(void) {
      * it the handler functions will be called multiple times. Thus
      * we only want to do it once.
      */
-    if (pthread_atfork(NULL, NULL, &uv__signal_global_reinit))
+    if (pthread_atfork(NULL, NULL, &uv__signal_global_reinit)) //在子进程中重新初始化全局的signal pipe
       abort();
 
   uv__signal_global_reinit();
@@ -179,7 +179,7 @@ static uv_signal_t* uv__signal_first_handle(int signum) {
   return NULL;
 }
 
-
+//系统signal触发的handler函数
 static void uv__signal_handler(int signum) {
   uv__signal_msg_t msg;
   uv_signal_t* handle;
@@ -220,7 +220,7 @@ static void uv__signal_handler(int signum) {
   errno = saved_errno;
 }
 
-
+//注册事件处理器
 static int uv__signal_register_handler(int signum, int oneshot) {
   /* When this function is called, the signal lock must be held. */
   struct sigaction sa;
@@ -429,7 +429,7 @@ static int uv__signal_start(uv_signal_t* handle,
   return 0;
 }
 
-
+// signal事件处理回调
 static void uv__signal_event(uv_loop_t* loop,
                              uv__io_t* w,
                              unsigned int events) {
