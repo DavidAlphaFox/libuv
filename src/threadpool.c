@@ -304,7 +304,7 @@ static int uv__work_cancel(uv_loop_t* loop, uv_req_t* req, struct uv__work* w) {
   return 0;
 }
 
-
+//默认的异步工作线程完成的回调
 void uv__work_done(uv_async_t* handle) {
   struct uv__work* w;
   uv_loop_t* loop;
@@ -326,7 +326,7 @@ void uv__work_done(uv_async_t* handle) {
 
     w = container_of(q, struct uv__work, wq);
     err = (w->work == uv__cancelled) ? UV_ECANCELED : 0;
-    w->done(w, err);
+    w->done(w, err); //调用worker的done函数
     nevents++;
   }
 
