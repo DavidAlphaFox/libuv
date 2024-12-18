@@ -1247,7 +1247,7 @@ static void uv__stream_connect(uv_stream_t* stream) {
   int error;
   uv_connect_t* req = stream->connect_req;
   socklen_t errorsize = sizeof(int);
-
+  //处理connect，获取socket异常
   assert(stream->type == UV_TCP || stream->type == UV_NAMED_PIPE);
   assert(req);
 
@@ -1278,7 +1278,7 @@ static void uv__stream_connect(uv_stream_t* stream) {
   if (error < 0 || uv__queue_empty(&stream->write_queue)) {
     uv__io_stop(stream->loop, &stream->io_watcher, POLLOUT);
   }
-
+  //进行Req的回调
   if (req->cb)
     req->cb(req, error);
 

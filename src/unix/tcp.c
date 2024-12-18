@@ -121,7 +121,7 @@ int uv_tcp_init_ex(uv_loop_t* loop, uv_tcp_t* tcp, unsigned int flags) {
 
   if (flags & ~0xFF)
     return UV_EINVAL;
-
+  //先调用stream的callback，然后再调用req的callback
   uv__stream_init(loop, (uv_stream_t*)tcp, UV_TCP);
 
   /* If anything fails beyond this point we need to remove the handle from
